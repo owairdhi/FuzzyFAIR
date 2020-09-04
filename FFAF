@@ -78,7 +78,7 @@ rules <- set(
   fuzzy_rule( Findable %is% MF && Accessible %is% HA && Interoperable %is% LI && Reusable %is% HR , FAIRness %is% OF ),
   fuzzy_rule( Findable %is% MF && Accessible %is% HA && Interoperable %is% MI && Reusable %is% LR , FAIRness %is% OF ),
   fuzzy_rule( Findable %is% MF && Accessible %is% HA && Interoperable %is% MI && Reusable %is% MR , FAIRness %is% GF ),
-    fuzzy_rule( Findable %is% MF && Accessible %is% HA && Interoperable %is% MI && Reusable %is% HR , FAIRness %is% GF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% HA && Interoperable %is% MI && Reusable %is% HR , FAIRness %is% GF ),
   fuzzy_rule( Findable %is% MF && Accessible %is% HA && Interoperable %is% HI && Reusable %is% LR , FAIRness %is% OF ),
   fuzzy_rule( Findable %is% MF && Accessible %is% HA && Interoperable %is% HI && Reusable %is% MR , FAIRness %is% GF ),
   fuzzy_rule( Findable %is% MF && Accessible %is% HA && Interoperable %is% HI && Reusable %is% HR , FAIRness %is% GF ),
