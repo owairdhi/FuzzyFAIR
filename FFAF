@@ -1,0 +1,134 @@
+# This code is to set up a fuzzy system for finding FAIRness value of a digital resource
+# this code is an attachment to a research paper "Utilizing Fuzzy logic for assessing “FAIRness” of a digital resource"
+
+install.packages("sets") ## install package  one time only and call sets library 
+library(sets)
+
+# set universe
+sets_options("universal", seq(from = 0, to = 100, by = 0.1))
+
+# set up fuzzy variables
+variables <- 
+  set(  Findable = fuzzy_variable( LF = fuzzy_trapezoid(corners = c(-1, 0, 20, 50)),
+                             MF = fuzzy_triangular(corners = c(20, 50, 80)),
+                             HF = fuzzy_trapezoid(corners = c(50, 80, 100, 101))),
+                   Accessible = fuzzy_variable( LA = fuzzy_trapezoid(corners = c(-1, 0, 20, 50)),
+                                 MA = fuzzy_triangular(corners = c(20, 50, 80)),
+                                 HA = fuzzy_trapezoid(corners = c(50, 80, 100, 101))),
+                   Interoperable = fuzzy_variable( LI = fuzzy_trapezoid(corners = c(-1, 0, 20, 50)),
+                                    MI = fuzzy_triangular(corners = c(20, 50, 80)),
+                                    HI = fuzzy_trapezoid(corners = c(50, 80, 100, 101))),
+                   Reusable = fuzzy_variable( LR = fuzzy_trapezoid(corners = c(-1, 0, 20, 50)),
+                               MR = fuzzy_triangular(corners = c(20, 50, 80)),
+                               HR = fuzzy_trapezoid(corners = c(50, 80, 100, 101))),
+                   FAIRness = fuzzy_variable( PF = fuzzy_trapezoid(corners = c(-1, 0, 20, 50)),
+                               OF = fuzzy_triangular(corners = c(20, 50, 80)),
+                               GF = fuzzy_trapezoid(corners = c(50, 80, 100, 101)))
+                )
+
+# Fuzzy rule  
+rules <- set(
+  fuzzy_rule( Findable %is% LF && Accessible %is% LA && Interoperable %is% LI && Reusable %is% LR , FAIRness %is% PF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% LA && Interoperable %is% LI && Reusable %is% MR , FAIRness %is% PF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% LA && Interoperable %is% LI && Reusable %is% HR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% LA && Interoperable %is% MI && Reusable %is% LR , FAIRness %is% PF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% LA && Interoperable %is% MI && Reusable %is% MR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% LA && Interoperable %is% MI && Reusable %is% HR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% LA && Interoperable %is% HI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% LA && Interoperable %is% HI && Reusable %is% MR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% LA && Interoperable %is% HI && Reusable %is% HR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% MA && Interoperable %is% LI && Reusable %is% LR , FAIRness %is% PF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% MA && Interoperable %is% LI && Reusable %is% MR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% MA && Interoperable %is% LI && Reusable %is% HR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% MA && Interoperable %is% MI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% MA && Interoperable %is% MI && Reusable %is% MR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% MA && Interoperable %is% MI && Reusable %is% HR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% MA && Interoperable %is% HI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% MA && Interoperable %is% HI && Reusable %is% MR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% MA && Interoperable %is% HI && Reusable %is% HR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% HA && Interoperable %is% LI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% HA && Interoperable %is% LI && Reusable %is% MR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% HA && Interoperable %is% LI && Reusable %is% HR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% HA && Interoperable %is% MI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% HA && Interoperable %is% MI && Reusable %is% MR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% HA && Interoperable %is% MI && Reusable %is% HR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% HA && Interoperable %is% HI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% HA && Interoperable %is% HI && Reusable %is% MR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% LF && Accessible %is% HA && Interoperable %is% HI && Reusable %is% HR , FAIRness %is% GF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% LA && Interoperable %is% LI && Reusable %is% LR , FAIRness %is% PF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% LA && Interoperable %is% LI && Reusable %is% MR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% LA && Interoperable %is% LI && Reusable %is% HR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% LA && Interoperable %is% MI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% LA && Interoperable %is% MI && Reusable %is% MR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% LA && Interoperable %is% MI && Reusable %is% HR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% LA && Interoperable %is% HI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% LA && Interoperable %is% HI && Reusable %is% MR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% LA && Interoperable %is% HI && Reusable %is% HR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% MA && Interoperable %is% LI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% MA && Interoperable %is% LI && Reusable %is% MR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% MA && Interoperable %is% LI && Reusable %is% HR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% MA && Interoperable %is% MI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% MA && Interoperable %is% MI && Reusable %is% MR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% MA && Interoperable %is% MI && Reusable %is% HR , FAIRness %is% GF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% MA && Interoperable %is% HI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% MA && Interoperable %is% HI && Reusable %is% MR , FAIRness %is% GF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% MA && Interoperable %is% HI && Reusable %is% HR , FAIRness %is% GF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% HA && Interoperable %is% LI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% HA && Interoperable %is% LI && Reusable %is% MR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% HA && Interoperable %is% LI && Reusable %is% HR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% HA && Interoperable %is% MI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% HA && Interoperable %is% MI && Reusable %is% MR , FAIRness %is% GF ),
+    fuzzy_rule( Findable %is% MF && Accessible %is% HA && Interoperable %is% MI && Reusable %is% HR , FAIRness %is% GF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% HA && Interoperable %is% HI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% HA && Interoperable %is% HI && Reusable %is% MR , FAIRness %is% GF ),
+  fuzzy_rule( Findable %is% MF && Accessible %is% HA && Interoperable %is% HI && Reusable %is% HR , FAIRness %is% GF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% LA && Interoperable %is% LI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% LA && Interoperable %is% LI && Reusable %is% MR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% LA && Interoperable %is% LI && Reusable %is% HR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% LA && Interoperable %is% MI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% LA && Interoperable %is% MI && Reusable %is% MR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% LA && Interoperable %is% MI && Reusable %is% HR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% LA && Interoperable %is% HI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% LA && Interoperable %is% HI && Reusable %is% MR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% LA && Interoperable %is% HI && Reusable %is% HR , FAIRness %is% GF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% MA && Interoperable %is% LI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% MA && Interoperable %is% LI && Reusable %is% MR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% MA && Interoperable %is% LI && Reusable %is% HR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% MA && Interoperable %is% MI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% MA && Interoperable %is% MI && Reusable %is% MR , FAIRness %is% GF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% MA && Interoperable %is% MI && Reusable %is% HR , FAIRness %is% GF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% MA && Interoperable %is% HI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% MA && Interoperable %is% HI && Reusable %is% MR , FAIRness %is% GF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% MA && Interoperable %is% HI && Reusable %is% HR , FAIRness %is% GF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% HA && Interoperable %is% LI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% HA && Interoperable %is% LI && Reusable %is% MR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% HA && Interoperable %is% LI && Reusable %is% HR , FAIRness %is% GF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% HA && Interoperable %is% MI && Reusable %is% LR , FAIRness %is% OF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% HA && Interoperable %is% MI && Reusable %is% MR , FAIRness %is% GF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% HA && Interoperable %is% MI && Reusable %is% HR , FAIRness %is% GF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% HA && Interoperable %is% HI && Reusable %is% LR , FAIRness %is% GF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% HA && Interoperable %is% HI && Reusable %is% MR , FAIRness %is% GF ),
+  fuzzy_rule( Findable %is% HF && Accessible %is% HA && Interoperable %is% HI && Reusable %is% HR , FAIRness %is% GF )
+)
+# Build a fuzzy system model
+model <- fuzzy_system(variables, rules)
+print(model)
+plot(model) ## plots variables
+
+# do inference
+useCase1 <- fuzzy_inference(model, list(Findable = 75, Accessible = 50, Interoperable = 25, Reusable = 50), implication = c("minimum"))
+
+# plot resulting aggregated fuzzy set
+plot(useCase1, main = "The Fuzzy sets Aggregation-")
+
+# centroid defuzzification method to get single point crisp output
+gset_defuzzify(useCase1, "centroid")
+
+# Other defuzzification methods
+
+gset_defuzzify(useCase1, "largestofmax")
+gset_defuzzify(useCase1, "smallestofmax")
+gset_defuzzify(useCase1, "meanofmax")
+
+sets_options("universe", NULL)  # always it is a good practice to Reset the universe
+
