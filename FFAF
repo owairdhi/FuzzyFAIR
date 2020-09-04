@@ -26,7 +26,8 @@ variables <-
                                GF = fuzzy_trapezoid(corners = c(50, 80, 100, 101)))
                 )
 
-# Fuzzy rule  
+# Fuzzy rules
+
 rules <- set(
   fuzzy_rule( Findable %is% LF && Accessible %is% LA && Interoperable %is% LI && Reusable %is% LR , FAIRness %is% PF ),
   fuzzy_rule( Findable %is% LF && Accessible %is% LA && Interoperable %is% LI && Reusable %is% MR , FAIRness %is% PF ),
@@ -110,12 +111,13 @@ rules <- set(
   fuzzy_rule( Findable %is% HF && Accessible %is% HA && Interoperable %is% HI && Reusable %is% MR , FAIRness %is% GF ),
   fuzzy_rule( Findable %is% HF && Accessible %is% HA && Interoperable %is% HI && Reusable %is% HR , FAIRness %is% GF )
 )
+
 # Build a fuzzy system model
 model <- fuzzy_system(variables, rules)
 print(model)
 plot(model) ## plots variables
 
-# do inference
+# do inferenceing
 useCase1 <- fuzzy_inference(model, list(Findable = 75, Accessible = 50, Interoperable = 25, Reusable = 50), implication = c("minimum"))
 
 # plot resulting aggregated fuzzy set
