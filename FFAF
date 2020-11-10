@@ -5,7 +5,7 @@ install.packages("sets") ## install package  one time only and call sets library
 library(sets)
 
 # set universe
-sets_options("universal", seq(from = 0, to = 100, by = 0.1))
+sets_options("universal", seq(from = 0, to = 100, by = 0.5))
 
 # set up fuzzy variables
 variables <- 
